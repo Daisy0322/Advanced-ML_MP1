@@ -1,7 +1,7 @@
 # MP1 Report: Gated FFN, Regularized Scaling, and Distillation
 
 DASE7506 · Protocol `7506-mp1-wt2-v2`  
-Submitted full-test BPB (CPU, FP32): **1.5147**
+Submitted full-test BPB (CPU, FP32): **1.51465**
 
 ## 1. Problem and baseline limitation
 
@@ -60,11 +60,11 @@ Later runs keep SwiGLU and add capacity, dropout, EMA, and distillation. Selecti
 | Dropout 0.1 | 256×6, 8k steps | 1.5364 | 1.5637 | 44.3 |
 | Longer + EMA | 256×6, 15k, EMA, selected 10k | 1.5199 | 1.5429 | 59.0 |
 | Wider + EMA | 288×7, dropout 0.15, 10k | 1.5111 | 1.5372 | 63.7 |
-| **Submitted** | **288×7 + QK-Norm + distill 12k** | **1.4938** | **1.5147** | **64.5–68.4** |
+| **Submitted** | **288×7 + QK-Norm + distill 12k** | **1.4938** | **1.51465** | **64.5–68.4** |
 
 Without dropout, validation is best near 4,000 steps and then degrades: training loss falls while validation BPB rises. Dropout 0.1 reverses that through 8,000 steps. EMA on a single trajectory is a legal weight average and improved the 256-wide run from 1.560 (20k, no EMA) to 1.543 test.
 
-Distillation is the last gain that still fits the time cap. The submitted student is only 504 parameters larger than the 288×7 EMA run (QK-Norm scales). A 384-wide teacher is trained first, then frozen; the student minimizes \(0.4\,\mathrm{CE} + 0.6\,T^2\,\mathrm{KL}\) with \(T=2\). Validation fell from 1.511 to 1.494 and test from 1.537 to 1.515.
+Distillation is the last gain that still fits the time cap. The submitted student is only 504 parameters larger than the 288×7 EMA run (QK-Norm scales). A 384-wide teacher is trained first, then frozen; the student minimizes \(0.4\,\mathrm{CE} + 0.6\,T^2\,\mathrm{KL}\) with \(T=2\). Validation fell from 1.511 to 1.494 and test from 1.537 to 1.51465.
 
 The validation–test gap stays about 0.02–0.03 on every frozen predictor. Test scoring of the submitted checkpoint was 68.4 s on a cold pass and 64.5 s on a repeat, versus a 13.7 s baseline (about 4.7–5.0×). The state dict is about 29 MiB. Peak evaluation RAM on CPU is well under 4 GiB.
 
@@ -93,7 +93,7 @@ cd code
 python evaluate.py --checkpoint /path/to/cloud-distill-12k/checkpoint.pt --device cpu --precision fp32 --split test
 ```
 
-Expected test BPB: **1.5147**. Checkpoint SHA-256: `235c0fc0821d95d4045db3cdbe62af6021d4b1d84ce680dcdddeb6c8df52b3aa`.
+Expected test BPB: **1.51465**. Checkpoint SHA-256: `235c0fc0821d95d4045db3cdbe62af6021d4b1d84ce680dcdddeb6c8df52b3aa`.
 
 Retrain on a GPU (teacher, then student):
 

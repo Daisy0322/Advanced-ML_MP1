@@ -4,7 +4,7 @@ Read [the assignment guide](../GUIDE.md) for assessment, deadlines and peer revi
 
 ## Submitted result
 
-- **Full-test FP32 BPB: 1.5147** (lower is better), protocol `7506-mp1-wt2-v2`.
+- **Full-test FP32 BPB: 1.51465** (lower is better), protocol `7506-mp1-wt2-v2`.
 - Checkpoint: `runs/cloud-distill-12k/checkpoint.pt` (upload this file separately; `runs/` is gitignored). SHA-256 `235c0fc0821d95d4045db3cdbe62af6021d4b1d84ce680dcdddeb6c8df52b3aa`.
 - Config: `configs/submit_distill.json`. Implementation module: `student`.
 - Evaluate without retraining:
