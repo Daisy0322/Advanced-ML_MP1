@@ -1,0 +1,11 @@
+{
+  "vocab": 2048,
+  "width": 288,
+  "heads": 8,
+  "depth": 7,
+  "context": 256,
+  "ffn": "swiglu",
+  "norm": "rms",
+  "pos": "rope",
+  "dropout": 0.15
+}
